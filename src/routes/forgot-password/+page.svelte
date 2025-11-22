@@ -22,6 +22,17 @@
             {#if form?.error}
                 <div class="alert alert-error">
                     {form.error}
+                    {#if form?.isGoogleAccount}
+                        <div style="margin-top: var(--space-4);">
+                            <a
+                                href="/login"
+                                class="btn btn-primary"
+                                style="width: 100%;"
+                            >
+                                Sign in with Google
+                            </a>
+                        </div>
+                    {/if}
                 </div>
             {/if}
 
@@ -41,8 +52,10 @@
                 <button
                     type="submit"
                     class="btn btn-primary"
-                    style="width: 100%;">Send Reset Link</button
+                    style="width: 100%;"
                 >
+                    Send Reset Link
+                </button>
             </form>
 
             <div
