@@ -7,6 +7,11 @@
             <p class="text-muted">View, disable, and manage users.</p>
         </a>
 
+        <a href="/admin/posts" class="card hover:shadow-md transition-all">
+            <h2 class="heading-2">Blog Posts</h2>
+            <p class="text-muted">Create and manage blog posts.</p>
+        </a>
+
         <div class="card opacity-50 cursor-not-allowed">
             <h2 class="heading-2">Audit Logs</h2>
             <p class="text-muted">View system activity (Coming Soon).</p>

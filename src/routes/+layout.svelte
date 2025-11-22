@@ -34,6 +34,7 @@
     <div class="container nav-content">
       <a href="/" class="nav-logo">SKSB Auth</a>
       <div class="nav-links">
+        <a href="/blog" class="btn btn-outline">Blog</a>
         {#if user}
           <a href="/demo/protected-full" class="btn btn-outline">Protected</a>
           <a href="/admin" class="btn btn-outline">Admin</a>

@@ -11,7 +11,9 @@ export const actions = {
       return fail(400, { error: 'Email is required' });
     }
 
-    // Generate link
+    // Generate password recovery link
+    // Note: The actual domain of the link is controlled by Supabase's Site URL setting
+    // The redirectTo is where the user goes after Supabase processes the tokens
     const { data, error } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email,
@@ -21,11 +23,19 @@ export const actions = {
     });
 
     if (error) {
+      console.error('Error generating reset link:', error);
       return fail(500, { error: error.message });
     }
 
-    // Send email
-    const { error: emailError } = await sendPasswordResetEmail(email, data.properties.action_link);
+    // The action_link contains the recovery tokens in the URL hash
+    // Format: https://[supabase-site-url]/#access_token=...&refresh_token=...&type=recovery
+    const resetLink = data.properties.action_link;
+
+    console.log('Generated reset link:', resetLink);
+    console.log('Note: Link will use Supabase Site URL from dashboard settings');
+
+    // Send email with the link
+    const { error: emailError } = await sendPasswordResetEmail(email, resetLink);
 
     if (emailError) {
       console.error('Email error:', emailError);
