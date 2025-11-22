@@ -4,6 +4,7 @@ Use this prompt to recreate this entire authentication system from scratch, incl
 
 ---
 
+
 ## PROMPT START
 
 Build a complete authentication and user management system with the following specifications:
