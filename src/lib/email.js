@@ -6,7 +6,7 @@ const resend = new Resend(RESEND_API_KEY);
 export const sendPasswordResetEmail = async (email, link) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>', // Update with verified domain
+      from: 'Jesse Hall <jesse@jessehall.com>',
       to: [email],
       subject: 'Reset your password',
       html: `<p>Click the link below to reset your password:</p><p><a href="${link}">${link}</a></p>`,
@@ -27,7 +27,7 @@ export const sendPasswordResetEmail = async (email, link) => {
 export const sendSignupCode = async (email, code) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>', // Update with verified domain
+      from: 'Jesse Hall <jesse@jessehall.com>',
       to: [email],
       subject: 'Confirm your account',
       html: `<p>Your confirmation code is:</p><h2>${code}</h2><p>Enter this code to verify your account.</p>`,
@@ -48,7 +48,7 @@ export const sendSignupCode = async (email, code) => {
 export const sendWelcomeEmail = async (email, fullName) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>', // Update with verified domain
+      from: 'Jesse Hall <jesse@jessehall.com>',
       to: [email],
       subject: 'Welcome to SKSB Auth!',
       html: `
