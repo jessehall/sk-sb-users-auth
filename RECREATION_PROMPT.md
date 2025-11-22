@@ -120,7 +120,7 @@ src/
 ├── routes/
 │   ├── +layout.svelte (nav, auth state)
 │   ├── +layout.server.js (pass user to client)
-│   ├── +page.svelte (landing page)
+│   ├── +page.svelte (landing page with links to demo pages)
 │   ├── signup/
 │   │   ├── +page.svelte (signup form with Google button)
 │   │   └── +page.server.js (signup + Google OAuth actions)
@@ -196,6 +196,13 @@ RESEND_API_KEY=your_resend_api_key
 - Clean, modern UI with cards, buttons, inputs
 - Google Fonts (Inter or similar)
 - SVG favicon with app initial
+
+**Landing Page:**
+- Heading: "User Auth" with "Auth" in primary color
+- Two CTA buttons:
+  - "View partially protected page demo" (primary button, links to `/demo/protected-partial`)
+  - "View fully protected page demo" (outline button, links to `/demo/protected-full`)
+- Minimal, demo-focused design
 
 #### 11. Key Implementation Details
 
@@ -340,6 +347,13 @@ After the AI generates the code, follow these steps to configure external servic
 4. Click "Save and Continue"
 5. Skip "Scopes" → "Save and Continue"
 6. Add test users (your email) → "Save and Continue"
+
+**IMPORTANT: Make App External for Production**
+- After initial setup, go back to **OAuth consent screen**
+- Click "MAKE EXTERNAL" or "Edit App"
+- Change User Type from "Internal" to "External"
+- This allows any Google user to sign up (not just test users)
+- For production, you may need to publish the app
 
 #### Create OAuth Credentials
 1. Go to **APIs & Services** → **Credentials**
@@ -551,8 +565,10 @@ Total cost for small projects: **$0/month**
 - **DNS not verifying**: Wait up to 48 hours for propagation
 
 ### Google OAuth
-- **Redirect URI mismatch**: Ensure Supabase callback URL is in Google Console
+- **Redirect URI mismatch**: Ensure Supabase callback URL (`https://[project].supabase.co/auth/v1/callback`) is in Google Console Authorized redirect URIs
 - **OAuth not working**: Check Client ID and Secret are correct in Supabase
+- **Error 403: org_internal**: OAuth app is set to "Internal" - change to "External" in OAuth consent screen
+- **Redirects to localhost**: Update Supabase Site URL to your production domain in Authentication → URL Configuration
 
 ### Vercel
 - **Build fails**: Check environment variables are set
