@@ -1,6 +1,9 @@
 <script>
     import { enhance } from "$app/forms";
     export let data;
+    export let form;
+
+    let deletingUserId = null;
 </script>
 
 <div class="container">
@@ -8,6 +11,18 @@
         <h1 class="heading-1">User Management</h1>
         <a href="/admin" class="btn btn-outline">Back to Dashboard</a>
     </div>
+
+    {#if form?.success}
+        <div class="alert alert-success">
+            {form.message}
+        </div>
+    {/if}
+
+    {#if form?.error}
+        <div class="alert alert-error">
+            {form.error}
+        </div>
+    {/if}
 
     <div class="card overflow-x-auto">
         <table style="width: 100%; border-collapse: collapse;">
@@ -56,7 +71,42 @@
                                     >Reset Pass</button
                                 >
                             </form>
-                            <!-- Disable user would go here -->
+
+                            <form
+                                action="?/deleteUser"
+                                method="POST"
+                                use:enhance={() => {
+                                    deletingUserId = profile.id;
+                                    return async ({ update }) => {
+                                        await update();
+                                        deletingUserId = null;
+                                    };
+                                }}
+                                on:submit={(e) => {
+                                    if (
+                                        !confirm(
+                                            `Are you sure you want to delete ${profile.email}? This action cannot be undone.`,
+                                        )
+                                    ) {
+                                        e.preventDefault();
+                                    }
+                                }}
+                            >
+                                <input
+                                    type="hidden"
+                                    name="userId"
+                                    value={profile.id}
+                                />
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger text-sm"
+                                    disabled={deletingUserId === profile.id}
+                                >
+                                    {deletingUserId === profile.id
+                                        ? "Deleting..."
+                                        : "Delete"}
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 {/each}
