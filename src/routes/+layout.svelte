@@ -3,6 +3,7 @@
   import { invalidate } from "$app/navigation";
   import { onMount } from "svelte";
   import { createBrowserClient } from "@supabase/ssr";
+  import { goto } from "$app/navigation";
   import {
     PUBLIC_SUPABASE_ANON_KEY,
     PUBLIC_SUPABASE_URL,
@@ -19,6 +20,37 @@
   );
 
   onMount(() => {
+    // Check for password recovery tokens in URL hash
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const access_token = hashParams.get("access_token");
+    const refresh_token = hashParams.get("refresh_token");
+    const type = hashParams.get("type");
+
+    // If this is a password recovery link, handle it
+    if (access_token && refresh_token && type === "recovery") {
+      console.log("Password recovery detected, setting session...");
+
+      supabaseClient.auth
+        .setSession({
+          access_token,
+          refresh_token,
+        })
+        .then(({ error }) => {
+          if (error) {
+            console.error("Error setting recovery session:", error);
+            goto("/login?error=invalid_recovery_link");
+          } else {
+            console.log("Recovery session set, redirecting to update-password");
+            // Clear the hash and redirect
+            window.location.hash = "";
+            goto("/update-password");
+          }
+        });
+
+      return; // Don't set up auth state change listener yet
+    }
+
+    // Normal auth state change handling
     const {
       data: { subscription },
     } = supabaseClient.auth.onAuthStateChange((event, _session) => {

@@ -41,12 +41,13 @@ export const actions = {
     }
 
     // User has email/password auth (with or without Google)
-    // Generate password recovery link
+    // Generate password recovery link that redirects to /auth/recovery
     const { data, error } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email,
       options: {
-        redirectTo: `${url.origin}/update-password`,
+        // This is where user goes AFTER clicking the link and Supabase processes it
+        redirectTo: `${url.origin}/auth/recovery`,
       },
     });
 
@@ -55,10 +56,12 @@ export const actions = {
       return fail(500, { error: 'Failed to generate reset link. Please try again.' });
     }
 
-    // The action_link contains the recovery tokens in the URL hash
+    // The action_link contains the recovery tokens
+    // It will be in format: https://[site-url]/#access_token=...&type=recovery
+    // But Supabase will redirect to our redirectTo URL with the tokens
     const resetLink = data.properties.action_link;
 
-    console.log('Generated reset link for email/password user');
+    console.log('Generated reset link:', resetLink);
 
     // Send email with the link
     const { error: emailError } = await sendPasswordResetEmail(email, resetLink);
