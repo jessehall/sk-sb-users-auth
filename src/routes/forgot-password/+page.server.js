@@ -27,18 +27,21 @@ export const actions = {
       return { success: true, message: 'If an account exists with this email, you will receive a reset link.' };
     }
 
-    // Check if user signed up with Google OAuth
-    const isGoogleUser = user.app_metadata?.provider === 'google' || 
-                         user.app_metadata?.providers?.includes('google');
+    // Check auth providers
+    const providers = user.app_metadata?.providers || [];
+    const hasEmailAuth = providers.includes('email');
+    const hasGoogleAuth = providers.includes('google');
 
-    if (isGoogleUser) {
+    // Only block if user ONLY has Google (no email/password)
+    if (hasGoogleAuth && !hasEmailAuth) {
       return fail(400, { 
-        error: 'This email is associated with a Google account. Please sign in with Google instead.',
+        error: 'This email is associated with a Google account only. Please sign in with Google instead.',
         isGoogleAccount: true
       });
     }
 
-    // Generate password recovery link for email/password users
+    // User has email/password auth (with or without Google)
+    // Generate password recovery link
     const { data, error } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email,
