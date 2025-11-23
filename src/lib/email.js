@@ -71,3 +71,44 @@ export const sendWelcomeEmail = async (email, fullName) => {
     return { error: e };
   }
 };
+
+export const sendContactEmails = async (name, email, message) => {
+  try {
+    // Admin notification
+    const adminRes = await resend.emails.send({
+      from: 'Jesse Hall <jesse@jessehall.com>',
+      to: ['jesse@jessehall.com'],
+      subject: 'New Contact Form Submission',
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
+      `,
+      reply_to: email
+    });
+
+    // User confirmation
+    const userRes = await resend.emails.send({
+      from: 'Jesse Hall <jesse@jessehall.com>',
+      to: [email],
+      subject: 'Thank you for contacting us',
+      html: `
+        <p>Hi ${name},</p>
+        <p>Thanks for reaching out! We've received your message and will get back to you soon.</p>
+        <p>Best regards,<br>The Team</p>
+      `
+    });
+
+    if (adminRes.error || userRes.error) {
+      console.error('Resend error:', adminRes.error || userRes.error);
+      return { error: adminRes.error || userRes.error };
+    }
+
+    return { success: true };
+  } catch (e) {
+    console.error('Resend exception:', e);
+    return { error: e };
+  }
+};

@@ -1,22 +1,48 @@
 :root {
-  /* Color Palette - Premium Dark/Light Mode */
-  --hue-primary: 250;
-  --hue-success: 150;
-  --hue-danger: 0;
-  
+  /* Brand Palette - The Source of Truth */
+  --brand-1: hsl(250, 80%, 60%);
+  /* Primary Purple */
+  --brand-2: hsl(250, 80%, 50%);
+  /* Primary Dark/Hover */
+  --brand-3: hsl(150, 80%, 40%);
+  /* Success Green */
+  --brand-4: hsl(0, 80%, 60%);
+  /* Danger Red */
+
+  --brand-5: hsl(220, 20%, 97%);
+  /* Light BG */
+  --brand-6: hsl(0, 0%, 100%);
+  /* White / Light Surface */
+  --brand-7: hsl(220, 20%, 10%);
+  /* Dark Text / Dark BG */
+  --brand-8: hsl(0, 0%, 31%);
+  /* Light Muted Text */
+  --brand-9: hsl(220, 10%, 90%);
+  /* Light Border */
+
+  --brand-10: hsl(220, 20%, 15%);
+  /* Dark Surface */
+  --brand-11: hsl(220, 20%, 95%);
+  /* Light Text (for Dark Mode) */
+  --brand-12: hsl(0, 0%, 65%);
+  /* Dark Muted Text */
+  --brand-13: hsl(220, 20%, 20%);
+  /* Dark Border */
+
+  /* Semantic Variables - Mapped to Brand Palette */
   /* Light Mode Defaults */
-  --color-bg: hsl(220, 20%, 97%);
-  --color-surface: hsl(0, 0%, 100%);
-  --color-text: hsl(220, 20%, 10%);
-  --color-text-muted: hsl(220, 10%, 40%);
-  --color-border: hsl(220, 10%, 90%);
-  
-  --color-primary: hsl(var(--hue-primary), 80%, 60%);
-  --color-primary-hover: hsl(var(--hue-primary), 80%, 50%);
+  --color-bg: var(--brand-5);
+  --color-surface: var(--brand-6);
+  --color-text: var(--brand-7);
+  --color-text-muted: var(--brand-8);
+  --color-border: var(--brand-9);
+
+  --color-primary: var(--brand-1);
+  --color-primary-hover: var(--brand-2);
   --color-primary-text: white;
 
-  --color-danger: hsl(var(--hue-danger), 80%, 60%);
-  --color-success: hsl(var(--hue-success), 80%, 40%);
+  --color-danger: var(--brand-4);
+  --color-success: var(--brand-3);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -26,7 +52,7 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-12: 3rem;
-  
+
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-size-sm: 0.875rem;
@@ -35,37 +61,45 @@
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 2rem;
-  
+
   /* Radius */
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-full: 9999px;
-  
+
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  
+
   /* Transitions */
   --transition-base: all 0.2s ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: hsl(220, 20%, 10%);
-    --color-surface: hsl(220, 20%, 15%);
-    --color-text: hsl(220, 20%, 95%);
-    --color-text-muted: hsl(220, 10%, 60%);
-    --color-border: hsl(220, 20%, 20%);
-    
-    --color-primary: hsl(var(--hue-primary), 70%, 65%);
-    --color-primary-hover: hsl(var(--hue-primary), 70%, 55%);
+    --color-bg: var(--brand-7);
+    --color-surface: var(--brand-10);
+    --color-text: var(--brand-11);
+    --color-text-muted: var(--brand-12);
+    --color-border: var(--brand-13);
+
+    /* Adjust primary for dark mode if needed, or keep same */
+    /* Often dark mode needs a slightly lighter/desaturated primary, 
+       but we'll stick to the requested palette mapping for now unless we add more brand colors.
+       Let's add a specific dark mode primary to the palette if we want to match previous logic exactly.
+       Previous: hsl(250, 70%, 65%) -> Let's call this brand-14
+    */
+    --color-primary: hsl(250, 70%, 65%);
+    --color-primary-hover: hsl(250, 70%, 55%);
   }
 }
 
 /* Reset & Base */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -84,7 +118,10 @@ a {
   text-decoration: none;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font: inherit;
 }
 
@@ -95,20 +132,54 @@ button, input, select, textarea {
   padding: 0 var(--space-4);
 }
 
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.gap-2 { gap: var(--space-2); }
-.gap-4 { gap: var(--space-4); }
-.gap-8 { gap: var(--space-8); }
+.flex {
+  display: flex;
+}
 
-.grid { display: grid; }
-.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: var(--space-2);
+}
+
+.gap-4 {
+  gap: var(--space-4);
+}
+
+.gap-8 {
+  gap: var(--space-8);
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
 
 @media (min-width: 768px) {
-  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mt-1 {
+  margin-top: var(--space-1);
 }
 
 /* Component Styles */
@@ -197,9 +268,17 @@ button, input, select, textarea {
   margin-bottom: var(--space-3);
 }
 
-.text-sm { font-size: var(--font-size-sm); }
-.text-muted { color: var(--color-text-muted); }
-.text-center { text-align: center; }
+.text-sm {
+  font-size: var(--font-size-sm);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-center {
+  text-align: center;
+}
 
 .nav {
   border-bottom: 1px solid var(--color-border);
@@ -241,4 +320,25 @@ button, input, select, textarea {
   background-color: hsla(var(--hue-success), 80%, 40%, 0.1);
   color: var(--color-success);
   border: 1px solid hsla(var(--hue-success), 80%, 40%, 0.2);
+}
+
+.text-danger {
+  color: var(--color-danger);
+}
+
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin-right: var(--space-2);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
