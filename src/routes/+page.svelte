@@ -25,13 +25,13 @@
             href="/demo/protected-partial"
             class="btn btn-primary"
             style="padding: var(--space-3) var(--space-8); font-size: var(--font-size-lg);"
-            >View partially protected page demo</a
+            >View fully protected page demo</a
         >
         <a
             href="/demo/protected-full"
             class="btn btn-outline"
             style="padding: var(--space-3) var(--space-8); font-size: var(--font-size-lg);"
-            >View fully protected page demo</a
+            >View partially protected page demo</a
         >
     </div>
 </div>
